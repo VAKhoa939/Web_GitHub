@@ -1,8 +1,8 @@
 <Context path="/Email">
 	<Resource name="jdbc/murach" auth="Container"
-		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://localhost:3306/murach?autoReconnect=true"
-		username="root" password="123456"
+		driverClassName="org.postgresql.Driver"
+		url="jdbc:postgresql://localhost:5432/murach?autoReconnect=true"
+		username="postgres" password="123456"
 		maxTotal="100" maxIdle="30" maxWaitMillis ="10000"
 		logAbandoned="true" removeAbandoned="true"
 		removeAbandonedTimeout="60" type="javax.sql.DataSource" />

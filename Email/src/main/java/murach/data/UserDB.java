@@ -195,11 +195,11 @@ package murach.data;
 
 import java.util.*;
 import jakarta.persistence.*;
-import murach.business.User;
+import murach.business.Users;
 
 public class UserDB
 {
-	public static void insert(User user) 
+	public static void insert(Users user) 
 	{
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		EntityTransaction trans = em.getTransaction();
@@ -220,7 +220,7 @@ public class UserDB
 		}
 	}
 	
-	public static void update(User user) 
+	public static void update(Users user) 
 	{
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		EntityTransaction trans = em.getTransaction();
@@ -241,7 +241,7 @@ public class UserDB
 		}
 	}
 	
-	public static void delete(User user) 
+	public static void delete(Users user) 
 	{
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		EntityTransaction trans = em.getTransaction();
@@ -264,20 +264,20 @@ public class UserDB
 	
 	public static boolean emailExists(String email)
 	{
-		User u = selectUser(email);
+		Users u = selectUser(email);
 		return u != null;
 	}
 	
-	public static User selectUser(String email)
+	public static Users selectUser(String email)
 	{
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
-		String qString = "SELECT u FROM User u "
+		String qString = "SELECT u FROM Users u "
 				+ "WHERE u.email = :email";
-		TypedQuery<User> q = em.createQuery(qString, User.class);
+		TypedQuery<Users> q = em.createQuery(qString, Users.class);
 		q.setParameter("email", email);
 		try 
 		{
-			User user = q.getSingleResult();
+			Users user = q.getSingleResult();
 			return user;
 		} 
 		catch (NoResultException e) 
@@ -291,12 +291,12 @@ public class UserDB
 		} 
 	}
 
-	public static List<User> selectUsers()
+	public static List<Users> selectUserList()
 	{
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
-		String qString = "SELECT u FROM User u";
-		TypedQuery<User> q = em.createQuery(qString, User.class);
-		List<User> users;
+		String qString = "SELECT u FROM Users u";
+		TypedQuery<Users> q = em.createQuery(qString, Users.class);
+		List<Users> users;
 		try 
 		{
 			users = q.getResultList();

@@ -49,6 +49,23 @@
 	<input type="submit" value="Confirm delete" class="margin_left">
 </form>
 
+<form action="emailList" method="post">
+	<input type="hidden" name="action" value="insert">
+	<p><b>- Insert a new user:</b></p>
+	
+	<label>Email:</label>
+	<input type="email" name="email"><br>
+	
+	<label>First name:</label>
+	<input type="text" name="firstName"><br>
+			
+	<label>Last name:</label>
+	<input type="text" name="lastName"><br>
+	
+	<label>&nbsp;</label>	
+	<input type="submit" value="Confirm insert" class="margin_left">
+</form>
+
 <p><b>- Click Return button to go back to the join page.</b></p><br>
 
 <form action="" method="post">

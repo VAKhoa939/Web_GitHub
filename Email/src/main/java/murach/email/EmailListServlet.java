@@ -62,13 +62,13 @@ public class EmailListServlet extends HttpServlet
 				else
 				{
 					// store data in User object
-					User user = new User(firstName, lastName, email);
+					Users user = new Users(firstName, lastName, email);
 					message = "";
 					UserDB.insert(user);		// save User object in db
 					/*
-					User userA = new User("John", "Smith", "jsmith@gmail.com");
-					User userB = new User("Joel", "Murach", "joelh@murach.com");
-					ArrayList<User> users = new ArrayList<>();
+					Users userA = new Users("John", "Smith", "jsmith@gmail.com");
+					Users userB = new Users("Joel", "Murach", "joelh@murach.com");
+					ArrayList<Users> users = new ArrayList<>();
 					
 					users.add(userA);
 					users.add(userB);
@@ -128,7 +128,7 @@ public class EmailListServlet extends HttpServlet
 		}
 		else if (action.equals("manage"))
 		{
-			List<User> users = UserDB.selectUsers();
+			List<Users> users = UserDB.selectUserList();
 			request.setAttribute("users", users);
 			url = "/user.jsp";		// the "admin" page
 		}
@@ -144,7 +144,7 @@ public class EmailListServlet extends HttpServlet
 			}
 			else
 			{
-				User user = UserDB.selectUser(email);
+				Users user = UserDB.selectUser(email);
 				if (firstName != null && firstName.isEmpty() == false)
 				{
 					user.setFirstName(firstName);
@@ -168,7 +168,7 @@ public class EmailListServlet extends HttpServlet
 				message = "Successfully updated the user.";
 				
 			}
-			List<User> users = UserDB.selectUsers();
+			List<Users> users = UserDB.selectUserList();
 			request.setAttribute("users", users);
 			request.setAttribute("message", message);
 			url = "/user.jsp";		// the "admin" page
@@ -187,7 +187,7 @@ public class EmailListServlet extends HttpServlet
 			}
 			else
 			{
-				User user = UserDB.selectUser(email);
+				Users user = UserDB.selectUser(email);
 				/*
 				if (UserDB.delete(user) != 0)
 				{
@@ -201,7 +201,35 @@ public class EmailListServlet extends HttpServlet
 				UserDB.delete(user);
 				message = "Successfully updated the user.";
 			}
-			List<User> users = UserDB.selectUsers();
+			List<Users> users = UserDB.selectUserList();
+			request.setAttribute("users", users);
+			request.setAttribute("message", message);
+			url = "/user.jsp";		// the "admin" page
+		}
+		else if (action.equals("insert"))
+		{
+			String email = request.getParameter("email");
+			String firstName = request.getParameter("firstName");
+			String lastName = request.getParameter("lastName");
+			String message;
+			if (firstName == null || lastName == null || email == null
+					|| firstName.isEmpty() || lastName.isEmpty() || email.isEmpty())
+			{
+				message = "Please fill out all three text boxes.";
+			}
+			else if (UserDB.emailExists(email))
+			{
+				message = "This email address already exists. "
+						+ "Please enter another email address.";
+			}
+			else
+			{
+				Users user = new Users(firstName, lastName, email);
+				message = "Successfully inserted the user.";
+				UserDB.insert(user);
+			}
+			
+			List<Users> users = UserDB.selectUserList();
 			request.setAttribute("users", users);
 			request.setAttribute("message", message);
 			url = "/user.jsp";		// the "admin" page
