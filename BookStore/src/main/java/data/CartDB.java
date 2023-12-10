@@ -1,65 +1,119 @@
 package data;
 
 import java.util.*;
-import java.sql.*;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import business.Cart;
 
 public class CartDB 
 {
-	// JDBA functions
-	public static int insert(Cart cart) 
+	public static void insert(Cart cart) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.persist(cart);
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
-	public static int update(Cart cart) 
+	public static void update(Cart cart) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.merge(cart);
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
-	public static int delete(Cart cart) 
+	public static void delete(Cart cart) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.remove(em.merge(cart));
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
 	public static boolean cartCodeExists(String cartCode)
 	{
-		ConnectionPool pool = ConnectionPool.getInstance();
-		Connection connection = pool.getConnection();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT CartCode FROM Cart "
-				+ "WHERE CartCode = ?";
+		Cart u = selectCart(cartCode);
+		return u != null;
+	}
+	
+	public static Cart selectCart (String cartCode)
+	{
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		String qString = "SELECT u FROM Cart u "
+				+ "WHERE u.cart = :cart";
+		TypedQuery<Cart> q = em.createNamedQuery(qString, Cart.class);
+		q.setParameter("cartCode", cartCode);
 		try 
 		{
-			ps = connection.prepareStatement(query);
-			ps.setString(1, cartCode);
-			rs = ps.executeQuery();
-			return rs.next();
+			Cart cart = q.getSingleResult();
+			return cart;
 		} 
-		catch (SQLException e) 
+		catch (NoResultException e) 
 		{
 			System.out.println(e);
-			return false;
+			return null;
 		} 
 		finally 
 		{
-			DBUtil.closeResultSet(rs);
-			DBUtil.closePreparedStatement(ps);
-			pool.freeConnection(connection);
+			em.close();
 		} 
 	}
 
-	public static Cart selectCart(String cartCode)
-	{
-		return new Cart();
-	}
-	
 	public static List<Cart> selectCarts()
 	{
-		return new ArrayList<Cart>();
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		String qString = "SELECT u FROM Cart u ";
+		TypedQuery<Cart> q = em.createNamedQuery(qString, Cart.class);
+		List<Cart> carts;
+		try 
+		{
+			carts = q.getResultList();
+			if (carts == null || carts.isEmpty())
+				carts = null;
+		} 
+		finally 
+		{
+			em.close();
+		} 
+		return carts;
 	}
-
-	// JPA functions
 }

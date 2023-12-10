@@ -1,61 +1,119 @@
 package data;
 
 import java.util.*;
-import java.sql.*;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import business.Description;
-import business.User;
 
 public class DescriptionDB 
 {
-	// JDBA functions
-	public static int insert(Description description) 
+	public static void insert(Description description) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.persist(description);
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
-	public static int update(Description description) 
+	public static void update(Description description) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.merge(description);
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
-	public static int delete(Description description) 
+	public static void delete(Description description) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.remove(em.merge(description));
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
 	public static boolean bookNameExists(String bookName)
 	{
-		ConnectionPool pool = ConnectionPool.getInstance();
-		Connection connection = pool.getConnection();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT BookName FROM Description "
-				+ "WHERE BookName = ?";
+		Description u = selectDescription(bookName);
+		return u != null;
+	}
+	
+	public static Description selectDescription(String bookName)
+	{
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		String qString = "SELECT u FROM Description u "
+				+ "WHERE u.bookName = :bookName";
+		TypedQuery<Description> q = em.createNamedQuery(qString, Description.class);
+		q.setParameter("bookName", bookName);
 		try 
 		{
-			ps = connection.prepareStatement(query);
-			ps.setString(1, bookName);
-			rs = ps.executeQuery();
-			return rs.next();
+			Description description = q.getSingleResult();
+			return description;
 		} 
-		catch (SQLException e) 
+		catch (NoResultException e) 
 		{
 			System.out.println(e);
-			return false;
+			return null;
 		} 
 		finally 
 		{
-			DBUtil.closeResultSet(rs);
-			DBUtil.closePreparedStatement(ps);
-			pool.freeConnection(connection);
+			em.close();
 		} 
 	}
 
-	public static Description selectDescription(String bookName)
+	public static List<Description> selectDescriptions()
 	{
-		return new Description();
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		String qString = "SELECT u FROM Desciption u ";
+		TypedQuery<Description> q = em.createNamedQuery(qString, Description.class);
+		List<Description> descriptions;
+		try 
+		{
+			descriptions = q.getResultList();
+			if (descriptions == null || descriptions.isEmpty())
+				descriptions = null;
+		} 
+		finally 
+		{
+			em.close();
+		} 
+		return descriptions;
 	}
-
-	// JPA functions
 }

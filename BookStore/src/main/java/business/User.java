@@ -1,16 +1,20 @@
 package business;
 
 import java.io.Serializable;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
+@Entity
 public class User implements Serializable
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long userId;
 	private String userName;
 	private String email;
 	private String addr;
 	private String phoneNo;
 	private String password;
-	
+
 	public User()
 	{
 		userName = "";
@@ -26,6 +30,16 @@ public class User implements Serializable
 		this.email = email;
 		this.addr = addr;
 		this.phoneNo = phoneNo;
+	}
+	
+	public long getUserId() 
+	{
+		return userId;
+	}
+
+	public void setUserId(long userId) 
+	{
+		this.userId = userId;
 	}
 
 	public String getUserName() 

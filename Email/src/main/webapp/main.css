@@ -1,0 +1,64 @@
+body 
+{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 85%;
+	margin-left: 2em;
+	margin-right: 2em;
+}
+
+h1 
+{
+    font-size: 140%;
+    color: teal;
+    margin-bottom: 0.5em;
+}
+
+h2 
+{
+    font-size: 120%;
+    color: teal;
+    margin-bottom: 0.5em;
+}
+
+label 
+{
+	float: left;
+	width: 10em;
+	margin-bottom: 0.5em;
+}
+
+span 
+{
+	margin-left: 0.5em;
+}
+
+input[type="text"], input[type="email"]
+{
+	width: 15em;
+	margin-left: 1.5em;
+	margin-bottom: 0.5em;
+}
+
+table 
+{
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 50em;
+}
+
+th, td 
+{
+    border: 1px solid black;
+    text-align: left;
+    padding: 0.5em;
+}
+
+br 
+{
+	clear: both;
+}
+
+#submit 
+{
+	margin-left: 1.5em;
+}

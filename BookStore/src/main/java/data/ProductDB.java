@@ -1,65 +1,119 @@
 package data;
 
 import java.util.*;
-import java.sql.*;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import business.Product;
 
 public class ProductDB 
 {
-	// JDBA functions
-	public static int insert(Product product) 
+	public static void insert(Product product) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.persist(product);
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
-	public static int update(Product product) 
+	public static void update(Product product) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.merge(product);
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
-	public static int delete(Product product) 
+	public static void delete(Product product) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.remove(em.merge(product));
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
 	public static boolean productCodeExists(String productCode)
 	{
-		ConnectionPool pool = ConnectionPool.getInstance();
-		Connection connection = pool.getConnection();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT ProductCode FROM Product "
-				+ "WHERE ProductCode = ?";
+		Product u = selectProduct(productCode);
+		return u != null;
+	}
+	
+	public static Product selectProduct(String productCode)
+	{
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		String qString = "SELECT u FROM Product u "
+				+ "WHERE u.productCode = :productCode";
+		TypedQuery<Product> q = em.createNamedQuery(qString, Product.class);
+		q.setParameter("productCode", productCode);
 		try 
 		{
-			ps = connection.prepareStatement(query);
-			ps.setString(1, productCode);
-			rs = ps.executeQuery();
-			return rs.next();
+			Product product = q.getSingleResult();
+			return product;
 		} 
-		catch (SQLException e) 
+		catch (NoResultException e) 
 		{
 			System.out.println(e);
-			return false;
+			return null;
 		} 
 		finally 
 		{
-			DBUtil.closeResultSet(rs);
-			DBUtil.closePreparedStatement(ps);
-			pool.freeConnection(connection);
+			em.close();
 		} 
 	}
 
-	public static Product selectProduct(String productCode)
-	{
-		return new Product();
-	}
-	
 	public static List<Product> selectProducts()
 	{
-		return new ArrayList<Product>();
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		String qString = "SELECT u FROM Product u ";
+		TypedQuery<Product> q = em.createNamedQuery(qString, Product.class);
+		List<Product> products;
+		try 
+		{
+			products = q.getResultList();
+			if (products == null || products.isEmpty())
+				products = null;
+		} 
+		finally 
+		{
+			em.close();
+		} 
+		return products;
 	}
-
-	// JPA functions
 }

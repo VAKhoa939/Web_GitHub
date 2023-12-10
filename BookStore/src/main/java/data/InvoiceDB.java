@@ -1,65 +1,119 @@
 package data;
 
 import java.util.*;
-import java.sql.*;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import business.Invoice;
 
 public class InvoiceDB 
 {
-	// JDBA functions
-	public static int insert(Invoice invoice) 
+	public static void insert(Invoice invoice) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.persist(invoice);
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
-	public static int update(Invoice invoice) 
+	public static void update(Invoice invoice) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.merge(invoice);
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
-	public static int delete(Invoice invoice) 
+	public static void delete(Invoice invoice) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.remove(em.merge(invoice));
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
 	public static boolean invoiceCodeExists(String invoiceCode)
 	{
-		ConnectionPool pool = ConnectionPool.getInstance();
-		Connection connection = pool.getConnection();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT InvoiceCode FROM Invoice "
-				+ "WHERE InvoiceCode = ?";
+		Invoice u = selectInvoice(invoiceCode);
+		return u != null;
+	}
+	
+	public static Invoice selectInvoice(String invoiceCode)
+	{
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		String qString = "SELECT u FROM Invoice u "
+				+ "WHERE u.invoiceCode = :invoiceCode";
+		TypedQuery<Invoice> q = em.createNamedQuery(qString, Invoice.class);
+		q.setParameter("invoiceCode", invoiceCode);
 		try 
 		{
-			ps = connection.prepareStatement(query);
-			ps.setString(1, invoiceCode);
-			rs = ps.executeQuery();
-			return rs.next();
+			Invoice invoice = q.getSingleResult();
+			return invoice;
 		} 
-		catch (SQLException e) 
+		catch (NoResultException e) 
 		{
 			System.out.println(e);
-			return false;
+			return null;
 		} 
 		finally 
 		{
-			DBUtil.closeResultSet(rs);
-			DBUtil.closePreparedStatement(ps);
-			pool.freeConnection(connection);
+			em.close();
 		} 
 	}
 
-	public static Invoice selectInvoice(String invoiceCode)
-	{
-		return new Invoice();
-	}
-	
 	public static List<Invoice> selectInvoices()
 	{
-		return new ArrayList<Invoice>();
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		String qString = "SELECT u FROM Invoice u ";
+		TypedQuery<Invoice> q = em.createNamedQuery(qString, Invoice.class);
+		List<Invoice> invoices;
+		try 
+		{
+			invoices = q.getResultList();
+			if (invoices == null || invoices.isEmpty())
+				invoices = null;
+		} 
+		finally 
+		{
+			em.close();
+		} 
+		return invoices;
 	}
-
-	// JPA functions
 }

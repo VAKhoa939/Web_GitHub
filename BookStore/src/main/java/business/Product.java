@@ -1,11 +1,16 @@
 package business;
 
 import java.io.Serializable;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
+@Entity
 public class Product implements Serializable
 {
+	@Id
 	private String productCode;
+	
+	@OneToOne
+	@JoinColumn(name = "descId")
 	private Description infor;
 	private double price;
 	
@@ -55,12 +60,12 @@ public class Product implements Serializable
 	
 	public String getCurrencyFormat()
 	{
-		return "";
+		return price + " VND";
 	}
 	
 	public String getlmageURL() 
 	{
-		String imageURL = "/musicStore/images/" + productCode + "_cover.jpg";
+		String imageURL = "/images/" + productCode + ".png";
 		return imageURL;
 	}
 }

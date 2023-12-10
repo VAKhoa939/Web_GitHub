@@ -1,10 +1,12 @@
 package business;
 
 import java.io.Serializable;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
+@Entity
 public class LineItem implements Serializable
 {
+	private long itemId;
 	private String itemCode;
 	private int quantity;
 	private Product item;
@@ -22,6 +24,28 @@ public class LineItem implements Serializable
 		this.quantity = quantity;
 		this.item = item;
 		this.discount = discount;
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public long getItemId() 
+	{
+		return itemId;
+	}
+
+	public void setItemId(long itemId) 
+	{
+		this.itemId = itemId;
+	}
+
+	public String getItemCode() 
+	{
+		return itemCode;
+	}
+
+	public void setItemCode(String itemCode) 
+	{
+		this.itemCode = itemCode;
 	}
 
 	public int getQuantity() 

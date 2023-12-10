@@ -1,65 +1,119 @@
 package data;
 
 import java.util.*;
-import java.sql.*;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import business.LineItem;
 
 public class LineItemDB 
 {
-	// JDBA functions
-	public static int insert(LineItem item) 
+	public static void insert(LineItem item) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.persist(item);
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
-	public static int update(LineItem item) 
+	public static void update(LineItem item) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.merge(item);
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
-	public static int delete(LineItem item) 
+	public static void delete(LineItem item) 
 	{
-		return 0;
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try
+		{
+			em.remove(em.merge(item));
+			trans.commit();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			trans.rollback();
+		}
+		finally 
+		{
+			em.close();
+		}
 	}
 	
 	public static boolean itemCodeExists(String itemCode)
 	{
-		ConnectionPool pool = ConnectionPool.getInstance();
-		Connection connection = pool.getConnection();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT ItemCode FROM LineItem "
-				+ "WHERE ItemCode = ?";
+		LineItem u = selectLineItem(itemCode);
+		return u != null;
+	}
+	
+	public static LineItem selectLineItem(String itemCode)
+	{
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		String qString = "SELECT u FROM LineItem u "
+				+ "WHERE u.itemCode = :itemCode";
+		TypedQuery<LineItem> q = em.createNamedQuery(qString, LineItem.class);
+		q.setParameter("itemCode", itemCode);
 		try 
 		{
-			ps = connection.prepareStatement(query);
-			ps.setString(1, itemCode);
-			rs = ps.executeQuery();
-			return rs.next();
+			LineItem lineItem = q.getSingleResult();
+			return lineItem;
 		} 
-		catch (SQLException e) 
+		catch (NoResultException e) 
 		{
 			System.out.println(e);
-			return false;
+			return null;
 		} 
 		finally 
 		{
-			DBUtil.closeResultSet(rs);
-			DBUtil.closePreparedStatement(ps);
-			pool.freeConnection(connection);
+			em.close();
 		} 
-	}
-
-	public static LineItem selectLineItem(String itemCode)
-	{
-		return new LineItem();
 	}
 	
 	public static List<LineItem> selectLineItems()
 	{
-		return new ArrayList<LineItem>();
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		String qString = "SELECT u FROM LineItem u ";
+		TypedQuery<LineItem> q = em.createNamedQuery(qString, LineItem.class);
+		List<LineItem> lineItems;
+		try 
+		{
+			lineItems = q.getResultList();
+			if (lineItems == null || lineItems.isEmpty())
+				lineItems = null;
+		} 
+		finally 
+		{
+			em.close();
+		} 
+		return lineItems;
 	}
-
-	// JPA functions
 }
