@@ -4,7 +4,8 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 
 @Entity
-public class Users implements Serializable 
+@Table(name="Users")
+public class User implements Serializable 
 {
 	// Field annotation
 	/*
@@ -16,14 +17,14 @@ public class Users implements Serializable
 	private String lastName;
 	private String email;
 	
-	public Users()
+	public User()
 	{
 		firstName = "";
 		lastName = "";
 		email = "";
 	}
 
-	public Users(String firstName, String lastName, String email) 
+	public User(String firstName, String lastName, String email) 
 	{
 		this.firstName = firstName;
 		this.lastName = lastName;

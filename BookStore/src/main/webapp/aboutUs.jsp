@@ -5,7 +5,7 @@
 <div class ="creator-info">
 	<div class= "row">
 		<div class="creator">
-			<img alt="" src="images/Khoa's img.jpg" height = 200px width = 200px>
+			<img alt="" src="images/Khoas img.png" height = 200px width = 200px>
 			<div>
 				<p>Name: Vo Anh Khoa</p>
 				<p>Student ID: 21110046</p>
@@ -15,7 +15,7 @@
 			</div>
 		</div>
 		<div class="creator">
-			<img alt="" src="images/Minh's img.jpg" height = 200px width = 200px>
+			<img alt="" src="images/Minhs img.png" height = 200px width = 200px>
 			<div>
 				<p>Name: Cao Khai Minh</p>
 				<p>Student ID: 21110058</p>
@@ -27,7 +27,7 @@
 	</div>
 	<div class= "row">
 		<div class="creator">
-			<img alt="" src="images/Luan's img.png" height = 200px width = 200px>
+			<img alt="" src="images/Luans img.png" height = 200px width = 200px>
 			<div>
 				<p>Name: Tran Thanh Luan</p>
 				<p>Student ID: 21110779</p>
@@ -37,7 +37,7 @@
 			</div>
 		</div>
 		<div class="creator">
-			<img alt="" src="images/Kien's img.png" height = 200px width = 200px>
+			<img alt="" src="images/Kiens img.png" height = 200px width = 200px>
 			<div>
 				<p>Name: Dao Trung Kien</p>
 				<p>Student ID: 21110777</p>

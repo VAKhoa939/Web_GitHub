@@ -6,7 +6,7 @@
 <div class="small-container single-product">
 	<div class="row">
 		<div class="col2">
-			<img src="images/${product.getProductCode()}.jpg" width=100% id="ProductImg">
+			<img src="images/${product.getProductCode()}.png" width=100% id="ProductImg">
 		</div>
 		<div class="col2">
 			<h1>${product.getInfor().getBookName()}</h1>

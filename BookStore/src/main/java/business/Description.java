@@ -2,7 +2,7 @@ package business;
 
 import java.io.Serializable;
 import java.util.*;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class Description implements Serializable

@@ -1,7 +1,7 @@
 package business;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class Product implements Serializable

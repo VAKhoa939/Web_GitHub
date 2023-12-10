@@ -1,33 +1,36 @@
 package business;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class LineItem implements Serializable
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long itemId;
 	private String itemCode;
 	private int quantity;
-	private Product item;
+
+	@OneToOne
+	@JoinColumn(name = "productId")
+	private Product product;
 	private double discount;
 	
 	public LineItem()
 	{
 		quantity = 0;
-		item = new Product();
+		product = new Product();
 		discount = 0;
 	}
 
 	public LineItem(int quantity, Product item, double discount) 
 	{
 		this.quantity = quantity;
-		this.item = item;
+		this.product = item;
 		this.discount = discount;
 	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	
 	public long getItemId() 
 	{
 		return itemId;
@@ -60,12 +63,12 @@ public class LineItem implements Serializable
 
 	public Product getItem() 
 	{
-		return item;
+		return product;
 	}
 
 	public void setItem(Product item) 
 	{
-		this.item = item;
+		this.product = item;
 	}
 
 	public double getDiscount() 

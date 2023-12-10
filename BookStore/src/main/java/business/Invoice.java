@@ -2,12 +2,17 @@ package business;
 
 import java.io.Serializable;
 import java.util.*;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class Invoice implements Serializable
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long invoiceId;
+	
+	@OneToOne
+	@JoinColumn(name = "cartId")
 	private Cart cart;
 	private String invoiceCode;
 	private Date invoiceDate;
@@ -25,9 +30,7 @@ public class Invoice implements Serializable
 		this.invoiceCode = invoiceNum;
 		this.invoiceDate = invoiceDate;
 	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	
 	public long getInvoiceId() {
 		return invoiceId;
 	}

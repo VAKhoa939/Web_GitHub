@@ -16,7 +16,7 @@
 				<form action="detail" method="post">
 					<input type="hidden" name="productCode" value="${product.getProductCode()}">
 					<button type="submit">
-						<img src="images/${product.getProductCode()}.jpg">
+						<img src="images/${product.getProductCode()}.png">
 						<h4>${product.getInfor().getBookName()}</h4>
 						<p>>${product.getCurrencyFormat()}</p>
 					</button>
