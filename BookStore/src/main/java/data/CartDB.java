@@ -69,19 +69,19 @@ public class CartDB
 		}
 	}
 	
-	public static boolean cartCodeExists(String cartCode)
+	public static boolean cartExists(long userId)
 	{
-		Cart u = selectCart(cartCode);
+		Cart u = selectCart(userId);
 		return u != null;
 	}
 	
-	public static Cart selectCart (String cartCode)
+	public static Cart selectCart(long userId)
 	{
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String qString = "SELECT u FROM Cart u "
-				+ "WHERE u.cart = :cart";
+				+ "WHERE u.user.userId = :userId";
 		TypedQuery<Cart> q = em.createNamedQuery(qString, Cart.class);
-		q.setParameter("cartCode", cartCode);
+		q.setParameter("userId", userId);
 		try 
 		{
 			Cart cart = q.getSingleResult();

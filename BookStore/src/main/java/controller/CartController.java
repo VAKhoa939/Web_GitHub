@@ -28,9 +28,21 @@ public class CartController extends HttpServlet
 				{
 					url = "/cart.jsp";
 				}
-				else if (action.equals("add"))
+				else if (action.equals("new"))
 				{
-					url = addQuantity(request, response);
+					url = addToCart(request, response);
+				}
+				else if (action.equals("change"))
+				{
+					
+				}
+				else if (action.equals("remove"))
+				{
+					
+				}
+				else if (action.equals("checkout"))
+				{
+					url = "/invoice.jsp";
 				}
 			}
 			else
@@ -78,35 +90,34 @@ public class CartController extends HttpServlet
 		return false;
 	}
 
-	private String addQuantity(HttpServletRequest request, HttpServletResponse response)
+	private String addToCart(HttpServletRequest request, HttpServletResponse response)
 	{
-		String url = null;
-		url = "/product_detail.jsp";
+		HttpSession session = request.getSession();
+		final Object lock = session.getId().intern();
+		User user = (User) session.getAttribute("user");
+		String url = "/product_detail.jsp";
+		
 		String productCode = request.getParameter("productCode");
-		//Product product = ProductDB.selectProduct(productCode);
-		
-		List<Product> products = new ArrayList<Product>();
-		products.add(new Product("Adventuretime", new Description("Adventuretime", "", "", "It's Adventure Time!", "", new Date()), 50000));
-		products.add(new Product("Adventuretime0", new Description("Adventuretime", "", "", "0", "", new Date()), 50000));
-		products.add(new Product("Adventuretime1", new Description("Adventuretime", "", "", "1", "", new Date()), 50000));
-		products.add(new Product("Adventuretime2", new Description("Adventuretime", "", "", "2", "", new Date()), 50000));
-		products.add(new Product("Adventuretime3", new Description("Adventuretime", "", "", "3", "", new Date()), 50000));
-		products.add(new Product("Adventuretime4", new Description("Adventuretime", "", "", "4", "", new Date()), 50000));
-		
-		Product product = new Product();
-		for (Product p : products)
+		Cart cart = CartDB.selectCart(user.getUserId());
+		boolean itemExists = false;
+		for (LineItem item : cart.getLineItems())
 		{
-			if (p.getProductCode().equals(productCode))
+			if (item.getItemCode().equals(productCode))
 			{
-				product = p;
+				itemExists = true;
+				item.increase();
+				LineItemDB.update(item);
 				break;
 			}
 		}
-		
+		if (!itemExists)
+		{
+			Product product = ProductDB.selectProduct(productCode);
+			LineItem item = new LineItem(1, product);
+		}
 		String message = "Product has been added to cart.";
 		
 		request.setAttribute("message", message);
-		request.setAttribute("product", product);
 		return url;
 	}
 }

@@ -15,20 +15,18 @@ public class LineItem implements Serializable
 	@OneToOne
 	@JoinColumn(name = "productId")
 	private Product product;
-	private double discount;
 	
 	public LineItem()
 	{
 		quantity = 0;
 		product = new Product();
-		discount = 0;
 	}
 
-	public LineItem(int quantity, Product item, double discount) 
+	public LineItem(int quantity, Product product) 
 	{
 		this.quantity = quantity;
-		this.product = item;
-		this.discount = discount;
+		this.product = product;
+		itemCode = this.product.getProductCode();
 	}
 	
 	public long getItemId() 
@@ -66,20 +64,11 @@ public class LineItem implements Serializable
 		return product;
 	}
 
-	public void setItem(Product item) 
+	public void setItem(Product product) 
 	{
-		this.product = item;
+		this.product = product;
 	}
 
-	public double getDiscount() 
-	{
-		return discount;
-	}
-
-	public void setDiscount(double discount) 
-	{
-		this.discount = discount;
-	}
 	
 	public double getTotal()
 	{
@@ -89,5 +78,17 @@ public class LineItem implements Serializable
 	public String getTotalCurrencyFormat()
 	{
 		return "";
+	}
+	
+	public void increase()
+	{
+		quantity++;
+	}
+	
+	public void decrease()
+	{
+		quantity--;
+		if (quantity < 0)
+			quantity = 0;
 	}
 }

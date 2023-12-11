@@ -23,6 +23,7 @@ public class AccountController extends HttpServlet
 		if (requestURI.endsWith("/account"))
 		{
 			action = request.getParameter("action");
+			/*
 			if (checkActiveSession(request, response))
 			{
 				if (action == null || action.isBlank())
@@ -50,7 +51,30 @@ public class AccountController extends HttpServlet
 				{
 					url = register(request, response);
 				}
+				else
+				{
+					url = "/errors/"error_404.jsp";
+				}
 			}
+			*/
+			
+			// Test
+			if (action == null || action.isBlank())
+			{
+				String mode = "register";
+				request.setAttribute("mode", mode);
+				url = "/login.jsp";
+			}
+			else if (action.equals("register"))
+			{
+				url = register(request, response);
+			}
+			else if (action.equals("logout"))
+			{
+				url = logout(request, response);
+			}
+			// Test
+			
 			sc.getRequestDispatcher(url).forward(request, response);
 		}
 	}
@@ -127,7 +151,7 @@ public class AccountController extends HttpServlet
 				message = "Wrong password.";
 				url = "/login.jsp";
 				request.setAttribute("email", email);
-				request.setAttribute("password", "");
+				request.setAttribute("password", null);
 				request.setAttribute("mode", mode);
 			}
 		} 
@@ -135,8 +159,8 @@ public class AccountController extends HttpServlet
 		{
 			message = "Account does not exist.";
 			url = "/login.jsp";
-			request.setAttribute("email", "");
-			request.setAttribute("password", "");
+			request.setAttribute("email", null);
+			request.setAttribute("password", null);
 			request.setAttribute("mode", mode);
 		}
 		request.setAttribute("message", message);
@@ -167,16 +191,18 @@ public class AccountController extends HttpServlet
 			request.setAttribute("phoneNo", phoneNo);
 			request.setAttribute("password", password);
 		}
+		/*
 		else if (UserDB.emailExists(email)) 
 		{
 			message = "Account already exists. Please use another email address.";
 			url = "/login.jsp";
 			request.setAttribute("userName", userName);
-			request.setAttribute("email", "");
+			request.setAttribute("email", null);
 			request.setAttribute("addr", addr);
 			request.setAttribute("phoneNo", phoneNo);
 			request.setAttribute("password", password);
 		} 
+		*/
 		else 
 		{
 			User user = new User(userName, email, addr, phoneNo, password);
@@ -184,7 +210,7 @@ public class AccountController extends HttpServlet
 			{
 				session.setAttribute("user", user);
 			}
-			UserDB.insert(user);
+			//UserDB.insert(user);
 			Cookie c = new Cookie("userEmail", email);
 			c.setMaxAge(60 * 60 * 24 * 30);
 			c.setPath("/");

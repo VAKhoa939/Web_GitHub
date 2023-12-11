@@ -10,7 +10,6 @@ public class Cart implements Serializable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long cartId;
-	private String cartCode;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private ArrayList<LineItem> items;
@@ -25,28 +24,20 @@ public class Cart implements Serializable
 		user = new User();
 	}
 
-	public Cart(ArrayList<LineItem> items, User user, String cartCode) 
+	public Cart(ArrayList<LineItem> items, User user) 
 	{
 		this.items = items;
 		this.user = user;
-		this.cartCode = cartCode;
 	}
-	public long getCartId() {
+	
+	public long getCartId() 
+	{
 		return cartId;
 	}
 
-	public void setCartId(long cartId) {
+	public void setCartId(long cartId) 
+	{
 		this.cartId = cartId;
-	}
-	
-	public String getCartCode() 
-	{
-		return cartCode;
-	}
-
-	public void setCartCode(String cartCode) 
-	{
-		this.cartCode = cartCode;
 	}
 	
 	public ArrayList<LineItem> getLineItems() 

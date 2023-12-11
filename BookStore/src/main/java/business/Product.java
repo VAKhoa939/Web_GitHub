@@ -13,12 +13,14 @@ public class Product implements Serializable
 	@JoinColumn(name = "descId")
 	private Description infor;
 	private double price;
+	private double discount;
 	
 	public Product()
 	{
 		productCode = "";
 		infor = new Description();
 		price = 0;
+		discount = 100;
 	}
 
 	public Product(String productCode, Description infor, double price) 
@@ -57,10 +59,25 @@ public class Product implements Serializable
 	{
 		this.price = price;
 	}
+
+	public double getDiscount() 
+	{
+		return discount;
+	}
+
+	public void setDiscount(double discount) 
+	{
+		this.discount = discount;
+	}
+	
+	public double calPrice()
+	{
+		return price * (discount / 100); 
+	}
 	
 	public String getCurrencyFormat()
 	{
-		return price + " VND";
+		return calPrice() + " VND";
 	}
 	
 	public String getlmageURL() 
