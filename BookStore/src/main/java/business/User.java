@@ -4,6 +4,7 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name="Users")
 public class User implements Serializable
 {
 	@Id
@@ -24,12 +25,13 @@ public class User implements Serializable
 		password = "";
 	}
 
-	public User(String userName, String email, String addr, String phoneNo) 
+	public User(String userName, String email, String addr, String phoneNo, String password) 
 	{
 		this.userName = userName;
 		this.email = email;
 		this.addr = addr;
 		this.phoneNo = phoneNo;
+		this.password = password;
 	}
 	
 	public long getUserId() 

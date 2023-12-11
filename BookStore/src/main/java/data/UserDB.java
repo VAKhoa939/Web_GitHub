@@ -98,13 +98,13 @@ public class UserDB
 		} 
 	}
 	
-	public static User selectUser(long userID)
+	public static User selectUser(long userId)
 	{
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String qString = "SELECT u FROM User u "
-				+ "WHERE u.userID = :userID";
+				+ "WHERE u.userId = :userId";
 		TypedQuery<User> q = em.createNamedQuery(qString, User.class);
-		q.setParameter("userID", userID);
+		q.setParameter("userId", userId);
 		try 
 		{
 			User user = q.getSingleResult();
