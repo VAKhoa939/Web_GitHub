@@ -29,7 +29,7 @@ public class Cart implements Serializable
 		this.items = items;
 		this.user = user;
 	}
-	
+
 	public long getCartId() 
 	{
 		return cartId;
@@ -40,12 +40,13 @@ public class Cart implements Serializable
 		this.cartId = cartId;
 	}
 	
-	public ArrayList<LineItem> getLineItems() 
+
+	public ArrayList<LineItem> getItems() 
 	{
 		return items;
 	}
 
-	public void setLineItems(ArrayList<LineItem> items) 
+	public void setItems(ArrayList<LineItem> items) 
 	{
 		this.items = items;
 	}
@@ -59,19 +60,39 @@ public class Cart implements Serializable
 	{
 		this.user = user;
 	}
-
-	public int getCount()
-	{
-		return items.size();
-	}
 	
 	public void addItem(LineItem item)
 	{
-		
+		this.items.add(item);
 	}
 	
 	public void removeItem(LineItem item)
 	{
+		String productCode = item.getProduct().getProductCode();
 		
+		for (int i = 0; i < items.size(); i++) 
+		{
+			LineItem temp = items.get(i);
+			if (temp.getItemCode().equals(productCode)) 
+			{
+				this.items.remove(i);
+				break;
+			}
+		}
+	}
+	
+	public double getTotal()
+	{
+		double total = 0;
+		for (LineItem item : items)
+		{
+			total += item.getTotal();
+		}
+		return total;
+	}
+	
+	public String getTotalCurrencyFormat()
+	{
+		return getTotal() + "VND";
 	}
 }

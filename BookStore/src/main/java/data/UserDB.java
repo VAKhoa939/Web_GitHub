@@ -1,7 +1,7 @@
 package data;
 
 import java.util.*;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import business.User;
 
 public class UserDB 
@@ -80,7 +80,7 @@ public class UserDB
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String qString = "SELECT u FROM User u "
 				+ "WHERE u.email = :email";
-		TypedQuery<User> q = em.createNamedQuery(qString, User.class);
+		TypedQuery<User> q = em.createQuery(qString, User.class);
 		q.setParameter("email", email);
 		try 
 		{
@@ -103,7 +103,7 @@ public class UserDB
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String qString = "SELECT u FROM User u "
 				+ "WHERE u.userId = :userId";
-		TypedQuery<User> q = em.createNamedQuery(qString, User.class);
+		TypedQuery<User> q = em.createQuery(qString, User.class);
 		q.setParameter("userId", userId);
 		try 
 		{
@@ -125,7 +125,7 @@ public class UserDB
 	{
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String qString = "SELECT u FROM User u ";
-		TypedQuery<User> q = em.createNamedQuery(qString, User.class);
+		TypedQuery<User> q = em.createQuery(qString, User.class);
 		List<User> users;
 		try 
 		{

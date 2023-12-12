@@ -28,6 +28,13 @@ public class LineItem implements Serializable
 		this.product = product;
 		itemCode = this.product.getProductCode();
 	}
+
+	public LineItem(int quantity, Product product, String itemCode) 
+	{
+		this.quantity = quantity;
+		this.product = product;
+		this.itemCode = itemCode;
+	}
 	
 	public long getItemId() 
 	{
@@ -59,25 +66,24 @@ public class LineItem implements Serializable
 		this.quantity = quantity;
 	}
 
-	public Product getItem() 
+	public Product getProduct() 
 	{
 		return product;
 	}
 
-	public void setItem(Product product) 
+	public void setProduct(Product product) 
 	{
 		this.product = product;
 	}
 
-	
 	public double getTotal()
 	{
-		return 0;
+		return product.calPrice() * quantity;
 	}
 	
 	public String getTotalCurrencyFormat()
 	{
-		return "";
+		return getTotal() + "VND";
 	}
 	
 	public void increase()

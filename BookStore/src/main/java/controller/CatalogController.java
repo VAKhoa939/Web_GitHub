@@ -27,7 +27,7 @@ public class CatalogController extends HttpServlet
 			}
 			else
 			{
-				url = "/products.jsp";
+				url = "/errors/error_404.jsp";
 			}
 			
 			sc.getRequestDispatcher(url).forward(request, response);
@@ -43,16 +43,7 @@ public class CatalogController extends HttpServlet
 	{
 		String url = null;
 		url = "/products.jsp";
-		//List<Product> products = ProductDB.selectProducts();
-		
-		List<Product> products = new ArrayList<Product>();
-		products.add(new Product("Adventuretime", new Description("Adventuretime", "", "", "It's Adventure Time!", "", new Date()), 50000));
-		products.add(new Product("Adventuretime0", new Description("Adventuretime", "", "", "0", "", new Date()), 50000));
-		products.add(new Product("Adventuretime1", new Description("Adventuretime", "", "", "1", "", new Date()), 50000));
-		products.add(new Product("Adventuretime2", new Description("Adventuretime", "", "", "2", "", new Date()), 50000));
-		products.add(new Product("Adventuretime3", new Description("Adventuretime", "", "", "3", "", new Date()), 50000));
-		products.add(new Product("Adventuretime4", new Description("Adventuretime", "", "", "4", "", new Date()), 50000));
-
+		List<Product> products = ProductDB.selectProducts();
 		String message = "";
 		request.setAttribute("message", message);
 		request.setAttribute("products", products);

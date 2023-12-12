@@ -15,6 +15,7 @@ public class User implements Serializable
 	private String addr;
 	private String phoneNo;
 	private String password;
+	private int noInvoices;
 
 	public User()
 	{
@@ -23,6 +24,7 @@ public class User implements Serializable
 		addr = "";
 		phoneNo = "";
 		password = "";
+		noInvoices = 0;
 	}
 
 	public User(String userName, String email, String addr, String phoneNo, String password) 
@@ -33,7 +35,16 @@ public class User implements Serializable
 		this.phoneNo = phoneNo;
 		this.password = password;
 	}
-	
+
+	public User(String userName, String email, String addr, String phoneNo, String password, int noInvoices) 
+	{
+		this.userName = userName;
+		this.email = email;
+		this.addr = addr;
+		this.phoneNo = phoneNo;
+		this.password = password;
+		this.noInvoices = noInvoices;
+	}
 	public long getUserId() 
 	{
 		return userId;
@@ -92,5 +103,15 @@ public class User implements Serializable
 	public void setPassword(String password) 
 	{
 		this.password = password;
+	}
+
+	public int getNoInvoices() 
+	{
+		return noInvoices;
+	}
+
+	public void setNoInvoices(int noInvoices) 
+	{
+		this.noInvoices = noInvoices;
 	}
 }

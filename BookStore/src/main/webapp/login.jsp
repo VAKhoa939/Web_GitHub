@@ -13,12 +13,11 @@
 						<span onclick="register()">Register</span>
 						<hr id="Indicator">
 					</div>
-
-					<form id="LoginForm">
+					
+					<form id="LoginForm" action="account" method="post">
 						<input type="email" placeholder="Email" name="email" value="<c:out value='${email}'/>"><br>
 						<input type="password" placeholder="Password" name="password" value="<c:out value='${password}'/>"><br>
 						<button type="submit" class="btn">Login</button>
-						<a href="">Forget Password</a>
 					</form>
 
 					<form id="RegisterForm" action="account" method="post">
@@ -51,6 +50,11 @@
 		LoginForm.style.transform = "translateX(300px)";
 		Indicator.style.transform = "translateX(0px)";
 	}
-
+	if (mode=="login")
+	{
+		RegisterForm.style.transform = "translateX(300px)";
+		LoginForm.style.transform = "translateX(300px)";
+		Indicator.style.transform = "translateX(0px)";
+	}
 </script>
 <%@ include file="/includes/footer.jsp" %>

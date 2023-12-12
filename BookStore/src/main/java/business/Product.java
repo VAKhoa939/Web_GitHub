@@ -30,6 +30,14 @@ public class Product implements Serializable
 		this.price = price;
 	}
 
+	public Product(String productCode, Description infor, double price, double discount) 
+	{
+		this.productCode = productCode;
+		this.infor = infor;
+		this.price = price;
+		this.discount = discount;
+	}
+
 	public String getProductCode() 
 	{
 		return productCode;
@@ -72,17 +80,11 @@ public class Product implements Serializable
 	
 	public double calPrice()
 	{
-		return price * (discount / 100); 
+		return price; 
 	}
 	
 	public String getCurrencyFormat()
 	{
 		return calPrice() + " VND";
-	}
-	
-	public String getlmageURL() 
-	{
-		String imageURL = "/images/" + productCode + ".png";
-		return imageURL;
 	}
 }

@@ -1,7 +1,7 @@
 package data;
 
 import java.util.*;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import business.Product;
 
 public class ProductDB 
@@ -80,7 +80,7 @@ public class ProductDB
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String qString = "SELECT u FROM Product u "
 				+ "WHERE u.productCode = :productCode";
-		TypedQuery<Product> q = em.createNamedQuery(qString, Product.class);
+		TypedQuery<Product> q = em.createQuery(qString, Product.class);
 		q.setParameter("productCode", productCode);
 		try 
 		{
@@ -102,7 +102,7 @@ public class ProductDB
 	{
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String qString = "SELECT u FROM Product u ";
-		TypedQuery<Product> q = em.createNamedQuery(qString, Product.class);
+		TypedQuery<Product> q = em.createQuery(qString, Product.class);
 		List<Product> products;
 		try 
 		{

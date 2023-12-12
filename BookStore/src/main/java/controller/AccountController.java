@@ -23,7 +23,6 @@ public class AccountController extends HttpServlet
 		if (requestURI.endsWith("/account"))
 		{
 			action = request.getParameter("action");
-			/*
 			if (checkActiveSession(request, response))
 			{
 				if (action == null || action.isBlank())
@@ -39,8 +38,6 @@ public class AccountController extends HttpServlet
 			{
 				if (action == null || action.isBlank())
 				{
-					String mode = "login";
-					request.setAttribute("mode", mode);
 					url = "/login.jsp";
 				}
 				else if (action.equals("login"))
@@ -53,28 +50,9 @@ public class AccountController extends HttpServlet
 				}
 				else
 				{
-					url = "/errors/"error_404.jsp";
+					url = "/errors/error_404.jsp";
 				}
 			}
-			*/
-			
-			// Test
-			if (action == null || action.isBlank())
-			{
-				String mode = "register";
-				request.setAttribute("mode", mode);
-				url = "/login.jsp";
-			}
-			else if (action.equals("register"))
-			{
-				url = register(request, response);
-			}
-			else if (action.equals("logout"))
-			{
-				url = logout(request, response);
-			}
-			// Test
-			
 			sc.getRequestDispatcher(url).forward(request, response);
 		}
 	}
@@ -88,7 +66,11 @@ public class AccountController extends HttpServlet
 	{
 		HttpSession session = request.getSession();
 		final Object lock = session.getId().intern();
-		User user = (User) session.getAttribute("user");
+		User user;
+		synchronized(lock)
+		{
+			user = (User) session.getAttribute("user");
+		}
 
 		if (user != null) 
 		{
@@ -105,7 +87,10 @@ public class AccountController extends HttpServlet
 			else
 			{
 				user = UserDB.selectUser(userEmail);
-				session.setAttribute("user", user);
+				synchronized(lock)
+				{
+					session.setAttribute("user", user);
+				}
 				return true;
 			}
 		}
@@ -117,7 +102,6 @@ public class AccountController extends HttpServlet
 		final Object lock = session.getId().intern();
 		String message = null;
 		String url = null;
-		String mode = "login";
 
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
@@ -152,7 +136,6 @@ public class AccountController extends HttpServlet
 				url = "/login.jsp";
 				request.setAttribute("email", email);
 				request.setAttribute("password", null);
-				request.setAttribute("mode", mode);
 			}
 		} 
 		else 
@@ -161,7 +144,6 @@ public class AccountController extends HttpServlet
 			url = "/login.jsp";
 			request.setAttribute("email", null);
 			request.setAttribute("password", null);
-			request.setAttribute("mode", mode);
 		}
 		request.setAttribute("message", message);
 		return url;
@@ -191,7 +173,6 @@ public class AccountController extends HttpServlet
 			request.setAttribute("phoneNo", phoneNo);
 			request.setAttribute("password", password);
 		}
-		/*
 		else if (UserDB.emailExists(email)) 
 		{
 			message = "Account already exists. Please use another email address.";
@@ -201,8 +182,7 @@ public class AccountController extends HttpServlet
 			request.setAttribute("addr", addr);
 			request.setAttribute("phoneNo", phoneNo);
 			request.setAttribute("password", password);
-		} 
-		*/
+		}
 		else 
 		{
 			User user = new User(userName, email, addr, phoneNo, password);
@@ -210,7 +190,7 @@ public class AccountController extends HttpServlet
 			{
 				session.setAttribute("user", user);
 			}
-			//UserDB.insert(user);
+			UserDB.insert(user);
 			Cookie c = new Cookie("userEmail", email);
 			c.setMaxAge(60 * 60 * 24 * 30);
 			c.setPath("/");
@@ -226,15 +206,23 @@ public class AccountController extends HttpServlet
 	private String logout(HttpServletRequest request, HttpServletResponse response)
 	{
 		HttpSession session = request.getSession(false);
-		User user = (User) session.getAttribute("user");
+		final Object lock = session.getId().intern();
+		User user;
+		synchronized(lock)
+		{
+			user = (User) session.getAttribute("user");
+		}
 		String url = "/login.jsp";
 		String mode = "login";
 		String message = null;
 		
 		if (user != null) 
 		{
-			session.removeAttribute("user");
-			session.invalidate();
+			synchronized(lock)
+			{
+				session.removeAttribute("user");
+				session.invalidate();
+			}
 
 			Cookie[] cookies = request.getCookies();
 			String userEmail = CookieUtil.getCookieValue(cookies, "userEmail");

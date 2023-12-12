@@ -24,6 +24,12 @@ public class Invoice implements Serializable
 		invoiceDate = new Date();
 	}
 
+	public Invoice(Cart cart) 
+	{
+		this.cart = cart;
+		invoiceDate = new Date();
+	}
+
 	public Invoice(Cart cart, String invoiceNum, Date invoiceDate) 
 	{
 		this.cart = cart;
@@ -68,5 +74,13 @@ public class Invoice implements Serializable
 		this.invoiceDate = invoiceDate;
 	}
 	
-	
+	public Date getEstArrivalDate()
+	{
+		Date arrivalDate = (Date) invoiceDate.clone();
+		Calendar c = Calendar.getInstance();
+		c.setTime(arrivalDate);
+		c.add(Calendar.DATE, 2);
+		arrivalDate = c.getTime();
+		return arrivalDate;
+	}
 }

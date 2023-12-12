@@ -10,11 +10,31 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   <error-page>
-  	<error-code>404</error-code>
-  	<location>/errors/error_404.jsp</location>
+    <error-code>404</error-code>
+    <location>/errors/error_404.jsp</location>
   </error-page>
   <error-page>
-  	<exception-type>java.lang.Throwable</exception-type>
-  	<location>/errors/error_java.jsp</location>
+    <exception-type>java.lang.Throwable</exception-type>
+    <location>/errors/error_java.jsp</location>
   </error-page>
+  <servlet>
+    <description></description>
+    <display-name>InvoiceController</display-name>
+    <servlet-name>InvoiceController</servlet-name>
+    <servlet-class>controller.InvoiceController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InvoiceController</servlet-name>
+    <url-pattern>/InvoiceController</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>DatabaseController</display-name>
+    <servlet-name>DatabaseController</servlet-name>
+    <servlet-class>controller.DatabaseController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DatabaseController</servlet-name>
+    <url-pattern>/DatabaseController</url-pattern>
+  </servlet-mapping>
 </web-app>

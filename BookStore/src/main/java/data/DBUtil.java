@@ -1,7 +1,6 @@
 package data;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import jakarta.persistence.*;
 
 public class DBUtil 
 {

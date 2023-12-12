@@ -244,7 +244,7 @@ input:focus {
 	cursor: pointer;
 }
 
-/*--------Account_page------*/
+/*--------Login and Account page------*/
 .account-page {
 	padding: 50px 0;
 	background: radial-grandient(#fff, #ffd6d6);
@@ -276,15 +276,15 @@ input:focus {
 }
 
 .form-container form {
-	max-width: 300px;
+	max-width: 400px;
 	padding: 0 20px;
 	position: absolute;
-	top: 130px;
+	top: 75px;
 	transition: 1s;
 }
 
 form input {
-	width: 100px;
+	width: 250px;
 	height: 30px;
 	margin: 10px 0;
 	padding: 0 10px;
@@ -319,6 +319,57 @@ form .btn:focus {
 	margin-top: 8px;
 	transform: translateX(100px);
 	transition: transform 1s;
+}
+.user-page{
+	width: 100%;
+	height: 100vh;
+	background-image: url(images/account_page.jpg);
+}
+.user-box{
+	margin: auto;
+	margin-top: 10px;
+	padding: 30px 80px;
+	max-width: max-content;
+	background:#ff523b; 	
+	align-items: center;
+	justify-content: center;
+	border-radius: 20px;
+	color:white;
+}
+.col1, .col2{
+	text-align: center;
+}
+.user-box form{
+	width: 100%;
+	padding: 12px;
+	margin: 8px 0;
+	box-sizing:content-box;
+}
+.default-pic{
+	border-radius: 50%;
+	width: 150px;
+	background: white;
+	padding: 6px;
+}
+.info-box{
+	background: white;
+	color: #999;
+	padding:60px 0;
+	margin-right: -80px;
+	margin-left: -80px;
+	margin-bottom: -40px;
+	border-radius: 20px;
+}
+.col2 button{
+	border-radius: 20px;
+	outline: none;
+	border: none;
+	background: white;
+	color: #999;
+	padding: 15px 60px;
+	font-size: 10px;
+	font-weight: bolder;
+	box-shadow: 0 5px 10px #000;
 }
 
 /*------- cart items -------*/
@@ -385,4 +436,45 @@ td img {
 ion-icon {
 	padding-left: 20px;
   	font-size: 50px;
+}
+.alert{
+	color: red;
+}
+/*-------Invoice----------*/
+.wrapper{
+	width: 550px;
+	height: 600px;
+	background: rgb(255, 128, 64);
+	position: relative; 
+	padding: auto;
+	margin: auto;
+}
+.wrapper .logo{
+	padding: 0px 0px;
+	position: relative;
+	margin-top: 0%;
+}
+.invoice-header{
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 0.5 rem;
+}
+.title{
+	padding-top: 10%;
+	font-weight: 700;
+	font-size: 32px;
+	text-transform: uppercase;
+	letter-spacing: -1px;
+	color: black;
+}
+
+/*----Admin------*/
+information-container{
+	margin: 0;
+	padding: 0;
+	max-width: 500px;
+}
+colA{
+	margin: auto;
+	padding: auto;
 }

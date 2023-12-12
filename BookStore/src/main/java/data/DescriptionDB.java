@@ -1,7 +1,7 @@
 package data;
 
 import java.util.*;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import business.Description;
 
 public class DescriptionDB 
@@ -80,7 +80,7 @@ public class DescriptionDB
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String qString = "SELECT u FROM Description u "
 				+ "WHERE u.bookName = :bookName";
-		TypedQuery<Description> q = em.createNamedQuery(qString, Description.class);
+		TypedQuery<Description> q = em.createQuery(qString, Description.class);
 		q.setParameter("bookName", bookName);
 		try 
 		{
@@ -101,8 +101,8 @@ public class DescriptionDB
 	public static List<Description> selectDescriptions()
 	{
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
-		String qString = "SELECT u FROM Desciption u ";
-		TypedQuery<Description> q = em.createNamedQuery(qString, Description.class);
+		String qString = "SELECT u FROM Description u ";
+		TypedQuery<Description> q = em.createQuery(qString, Description.class);
 		List<Description> descriptions;
 		try 
 		{

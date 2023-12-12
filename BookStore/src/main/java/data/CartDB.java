@@ -1,7 +1,7 @@
 package data;
 
 import java.util.*;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import business.Cart;
 
 public class CartDB 
@@ -80,7 +80,7 @@ public class CartDB
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String qString = "SELECT u FROM Cart u "
 				+ "WHERE u.user.userId = :userId";
-		TypedQuery<Cart> q = em.createNamedQuery(qString, Cart.class);
+		TypedQuery<Cart> q = em.createQuery(qString, Cart.class);
 		q.setParameter("userId", userId);
 		try 
 		{
@@ -102,7 +102,7 @@ public class CartDB
 	{
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String qString = "SELECT u FROM Cart u ";
-		TypedQuery<Cart> q = em.createNamedQuery(qString, Cart.class);
+		TypedQuery<Cart> q = em.createQuery(qString, Cart.class);
 		List<Cart> carts;
 		try 
 		{

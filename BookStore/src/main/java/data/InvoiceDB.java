@@ -1,7 +1,7 @@
 package data;
 
 import java.util.*;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import business.Invoice;
 
 public class InvoiceDB 
@@ -80,7 +80,7 @@ public class InvoiceDB
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String qString = "SELECT u FROM Invoice u "
 				+ "WHERE u.invoiceCode = :invoiceCode";
-		TypedQuery<Invoice> q = em.createNamedQuery(qString, Invoice.class);
+		TypedQuery<Invoice> q = em.createQuery(qString, Invoice.class);
 		q.setParameter("invoiceCode", invoiceCode);
 		try 
 		{
@@ -102,7 +102,7 @@ public class InvoiceDB
 	{
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String qString = "SELECT u FROM Invoice u ";
-		TypedQuery<Invoice> q = em.createNamedQuery(qString, Invoice.class);
+		TypedQuery<Invoice> q = em.createQuery(qString, Invoice.class);
 		List<Invoice> invoices;
 		try 
 		{
